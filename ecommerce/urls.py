@@ -21,7 +21,7 @@ from product.views import ProductViewset
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
 router = DefaultRouter()
-router.register('product', ProductViewset)
+router.register('products', ProductViewset)
 
 
 urlpatterns = [
