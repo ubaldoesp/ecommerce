@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'product.apps.ProductConfig',
     'shoppingCar.apps.ShoppingcarConfig',
     'rest_framework',
+    'drf_yasg',
 ]
 
 MIDDLEWARE = [
@@ -132,5 +133,8 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.BasicAuthentication',
         'rest_framework.authentication.SessionAuthentication',
         'rest_framework_simplejwt.authentication.JWTAuthentication',
-    ]
+    ],
+    'DEFAULT_PERISSIONS_CLASSES':[
+    'rest_framework.permissions.IsAuthenticated'
+     ]
 }

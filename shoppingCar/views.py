@@ -1,14 +1,16 @@
+from django.conf.urls import url
 from django.db.models import query
 from django.shortcuts import render
-from rest_framework import serializers
+from rest_framework import serializers, status
 from rest_framework.serializers import Serializer
 from rest_framework.views import APIView
-from ecommerce.shoppingCar.models import CartProducts
+from shoppingCar.models import CartProducts
 from shoppingCar.models import Cart
 from product.models import Product
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
-from .serializers import *
+from rest_framework.decorators import action
+from shoppingCar.serializers import *
 # Create your views here.
 
         
@@ -19,7 +21,7 @@ class CartView(APIView):
         cart = Cart.objects.filter(user = user, ordered=False).first()
         queryset = CartProducts.objects.filter(cart=cart)
         serializer = CartProdcutsSerializer(queryset, many= True)
-        print(user)
+        
         return Response(serializer.data)
     
     def post(self, request):
@@ -41,13 +43,13 @@ class CartView(APIView):
         
         return Response({'success':'Products added  to your cart '})
     
-    def update(self,request):
+    def put(self,request):
         data = request.data
         cart_product = CartProducts.objects.get(id=data.get('id'))
         quantity = data.get('quantity')
         cart_product.quantity += quantity
         cart_product.save()
-        return Response('{success':'Products Update}')
+        return Response({'success':'Products Update'})
          
     def delete(self,request):
         user = request.user
@@ -58,3 +60,5 @@ class CartView(APIView):
         queryset = CartProducts.objects.filter(cart = cart)
         serializer = CartProdcutsSerializer(queryset, many=True)
         return Response(serializer.data)
+    
+    

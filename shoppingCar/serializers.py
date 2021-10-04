@@ -1,18 +1,19 @@
-from rest_framework.serializers import ModelSerializer
+from rest_framework import serializers
 
-from ecommerce.product.serializers import ProductSerializer
+from product.serializers import ProductSerializer
 from .models import  *
 
 
-class CartSerializer(ModelSerializer):
+class CartSerializer(serializers.ModelSerializer):
     class Meta:
         model= Cart
         fields = '__all__'
         
 
-class CartProdcutsSerializer(ModelSerializer):
+class CartProdcutsSerializer(serializers.ModelSerializer):
     cart= CartSerializer()
-    products = ProductSerializer()
+    product = ProductSerializer()
+    
     class Meta:
         model=CartProducts
         fields = '__all__'
