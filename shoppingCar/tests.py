@@ -1,6 +1,6 @@
 from django.test import APITestCase
 from rest_framework import status
-from ecommerce.product.models import Product
+from product.models import Product
 from .models import Cart, User, CartProducts
 
 # Create your tests here.
