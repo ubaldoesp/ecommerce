@@ -1,0 +1,44 @@
+version: "3.5"
+
+services:
+  db:
+    image: postgres:12.0-alpine
+    container_name: ecommerce_db
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    volumes:
+      - ./postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+  app:
+    build:
+      context: .
+      dockerfile: docker/app/Dockerfile
+      args:
+        APP_USER: 'bpuser'
+        SECRET_KEY: 'ta0_!3_$$1uy64*zavi_ao4dy^2ab5cg+u7m4$$rodk=a$$a7*!yl'
+        STATIC_ROOT: '/opt/ecommerce_files/static'
+        MEDIA_ROOT: '/opt/ecommerce_files/media'
+    container_name: ecommerce_app
+    env_file: '.env'
+    expose:
+      - 8000
+    volumes:
+      - .:/app
+      - files_volume:/opt/ecommerce_files
+    depends_on:
+      - db
+  cache:
+    image: redis:5.0.7-alpine
+    container_name: ecommerce_cache
+    ports:
+      - 6379:6379
+    volumes:
+      - redis_data:/data
+
+volumes:
+  postgres_data:
+  redis_data:
+  files_volume:
